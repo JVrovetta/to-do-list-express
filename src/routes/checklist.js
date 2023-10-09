@@ -1,34 +1,62 @@
 const express = require('express')
+const Checklist = require('../models/checklist')
 
 const router = express.Router()
 
 // GET
-router.get('/', (req, res) => {
-  console.log('GET');
-  res.send()
+router.get('/', async (req, res) => {
+  try {
+    const checklists = await Checklist.find({})
+    res.status(200).json(checklists)
+  }
+  catch (err) {
+    res.status(500).json(err)
+  }
 })
 
-router.get('/:id', (req, res) => {
-  console.log(req.params.id);
-  res.send(`GET/id => ${req.params.id}`)
+router.get('/:id', async (req, res) => {
+  try {
+    const checklist = await Checklist.findById(req.params.id)
+    res.status(200).json(checklist)
+  }
+  catch (err) {
+    res.status(404).json(err)
+  }
 })
 
 // POST
-router.post('/', (req, res) => {
-  console.log('POST');
-  console.log(req.body)
-  res.status(200).json(req.body)
+router.post('/', async (req, res) => {
+  try {
+    const { name } = req.body
+    const checklist = await Checklist.create({ name })
+    res.status(200).json(checklist)
+  }
+  catch (err) {
+    res.status(422).json(err)
+  }
 })
 
 // PUT
-router.put('/:id', (req, res) => {
-  console.log(req.body);
-  res.send(`PUT/id => ${req.params.id}`)
+router.put('/:id', async (req, res) => {
+  try {
+    const { name } = req.body
+    const upChecklist = await Checklist.findByIdAndUpdate(req.params.id, { name }, { new: true })
+    res.status(200).json(upChecklist)
+  }
+  catch (err) {
+    res.status(422).json(err)
+  }
 })
 
 // DELETE
-router.delete('/:id', (req, res) => {
-  console.log(req.body);
-  res.send(`DELETE/id => ${req.params.id}`)
+router.delete('/:id', async (req, res) => {
+  try {
+    const delChecklist = await Checklist.findByIdAndRemove(req.params.id)
+    res.status(200).json(delChecklist)
+  }
+  catch (err) {
+    res.status(422).json(err)
+  }
 })
+
 module.exports = router
