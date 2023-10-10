@@ -1,9 +1,12 @@
 const mongoose = require('mongoose')
 
-const taskSchema = mongoose.Schema({
-  name: { type: String, required: true },
-  done: { type: Boolean, default: false },
-  checklist: { type: mongoose.Schema.Types.ObjectId, ref: 'CheckList', required: true }
-})
+const taskSchema = mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    done: { type: Boolean, default: false },
+    checklist: { type: mongoose.Schema.Types.ObjectId, ref: 'CheckList', required: true }
+  },
+  { collection: 'tasks' }
+)
 
 module.exports = mongoose.model('Task', taskSchema)

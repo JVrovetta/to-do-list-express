@@ -1,0 +1,13 @@
+<%- include('../../layouts/header', {title: 'Novo checklist'}) %>
+<%- include('../../layouts/menu') %>
+
+<body>
+  <section class="section">
+    <div class="container">
+      <h1 class="title size-4">Nova Lista</h1>
+      <%- include('./common/form', {url: '/checklists?_method=post', checklist: checklist}) %>
+    </div>
+  </section>
+</body>
+
+<%- include('../../layouts/footer') %>
