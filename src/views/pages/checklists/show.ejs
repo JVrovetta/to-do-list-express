@@ -9,7 +9,7 @@
           <h1 class="title size-4"><%= checklist.name %></h1>
         </div>
         <div class="column is-one-fifth">
-          <a href="add-task.html" class="button is-success is-small">Nova Tarefa</a>
+          <a href="/checklists/<%= checklist.id %>/tasks/new" class="button is-success is-small">Nova Tarefa</a>
           <a href="/checklists" class="button is-small">Voltar</a>
         </div>
       </div>
@@ -18,17 +18,18 @@
 
       <% checklist.tasks.forEach(task => { %>
       <div class="columns">
-        <div class="column is-four-fifths">
-          <input type="checkbox" <% task.done&& checked %> /> <%= task.name %>
+        <div class="column is-four-fifths <%= task.done? 'has-text-success is-italic' : '' %>">
+          <input type="checkbox" data-func="setTagAsDone" data-task-id="<%= task.id %>" <%= task.done? 'checked' : '' %> /> <%= task.name %>
         </div>
-
         <div class="column is-one-fifth">
-          <button class="button is-danger is-small">Remover</button>
+          <a href="/tasks/<%= task.id %>?_method=delete" class="button is-danger is-small">Remover</a>
         </div>
       </div>
       <% }) %>
+
     </div>
   </section>
+  <script src="/javascripts/task.js"></script>
 </body>
 
 <%- include('../../layouts/footer') %>

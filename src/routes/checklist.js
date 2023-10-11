@@ -1,5 +1,6 @@
 const express = require('express')
 const Checklist = require('../models/checklist')
+const Task = require('../models/task')
 
 const router = express.Router()
 
@@ -36,7 +37,7 @@ router.get('/:id/edit', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   try {
-    const checklist = await Checklist.findById(req.params.id)
+    const checklist = await Checklist.findById(req.params.id).populate('tasks')
     res.status(200).render('pages/checklists/show', { checklist })
   }
   catch (err) {
@@ -78,6 +79,7 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     await Checklist.findByIdAndRemove(req.params.id)
+    await Task.deleteMany({ checklist: req.params.id })
     res.status(200).redirect('/checklists')
   }
   catch (err) {
